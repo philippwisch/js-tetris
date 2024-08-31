@@ -1,0 +1,29 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: bisque;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    margin: 24px;
+    font-size: 24px;
+}
+
+#gameboard {
+    border: solid black 5px;
+    height: calc(3 * 240px);
+    width: calc(3* 100px);
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(24, 30px);
+}
