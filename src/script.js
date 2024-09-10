@@ -27,6 +27,11 @@ function setup() {
     startButton.addEventListener('click', startGame);
 }
 
+function showGameOverMessage(isShowing) {
+    let el = document.querySelector('#game-over');
+    el.style.display = isShowing ? 'block' : 'none';
+}
+
 function startGame() {
     if (!gameRunning) {
         gameRunning = true;
@@ -80,7 +85,7 @@ function gameTick() {
 
     // if there is no falling piece, spawn a new one
     if (!fallingPiece) {
-        fallingPiece = new Tetromino();
+        fallingPiece = Tetromino.createRandomTetromino();
         draw(fallingPiece.color, fallingPiece.positions);
     } else { // if there is a falling piece, move it down
         draw('white', fallingPiece.positions);
@@ -96,11 +101,6 @@ function draw(color, positions) {
         }
         gameboardDivs[position.y * 10 + position.x].style = `background-color: ${color}`;
     })
-}
-
-function showGameOverMessage(isShowing) {
-    let el = document.querySelector('#game-over');
-    el.style.display = isShowing ? 'block' : 'none';
 }
 
 setup();
