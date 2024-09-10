@@ -26,16 +26,24 @@ function setup() {
 function startGame() {
     if (!gameRunning) {
         gameRunning = true;
-        score = 0;
-        gameBoard = new Board();
-        timer = setInterval(gameTick, 100);
-        gameboardDivs.forEach(div => div.style = 'background-color: white;');
+        showGameOverMessage(false);
+        
+        setupGame();
     }
+}
+
+function setupGame() {
+    score = 0;
+    gameBoard = new Board();
+    timer = setInterval(gameTick, 100);
+    gameboardDivs.forEach(div => div.style = 'background-color: white;');
 }
 
 function endGame() {
     if (gameRunning) {
         gameRunning = false;
+        showGameOverMessage(true);
+
         clearInterval(timer);
     }
 }
@@ -45,14 +53,20 @@ function gameTick() {
     // check for collisions
     if (fallingPiece) {
         // hitting the floor
-        const floor_collision = fallingPiece.positions.some(position => position.y === ROWS - 1);
+        const floorCollision = fallingPiece.positions.some(position => position.y === ROWS - 1);
         // if there is a block DIRECTLY beneath the piece (actually any of the blocks the piece is made out of)
         const collision = fallingPiece.positions.some(position => gameBoard.isOccupied(new Position(position.x, position.y + 1)));
 
         // the piece can't move down any more and stays where it currently is.
-        if (floor_collision || collision) {
+        if (floorCollision || collision) {
+            // check for game over
+            const gameOver = fallingPiece.positions.some(position => position.y === 0);
+            if (gameOver) {
+                endGame();
+                return;
+            }
+
             fallingPiece.positions.forEach(position => {
-                console.log(position);
                 gameBoard.addBlock(position);
             });
             fallingPiece = null;
@@ -78,6 +92,11 @@ function draw(color, positions) {
         }
         gameboardDivs[position.y * 10 + position.x].style = `background-color: ${color}`;
     })
+}
+
+function showGameOverMessage(isShowing) {
+    let el = document.querySelector('#game-over');
+    el.style.display = isShowing ? 'block' : 'none';
 }
 
 class Piece {

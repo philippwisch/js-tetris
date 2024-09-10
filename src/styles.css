@@ -3,7 +3,8 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: bisque;
+    background-color: #666;
+    font-size: 24px;
 }
 
 body {
@@ -13,7 +14,7 @@ body {
     align-items: center;
 }
 
-button {
+button, #score {
     margin: 24px;
     font-size: 24px;
 }
@@ -26,4 +27,26 @@ button {
     display: grid;
     grid-template-columns: repeat(10, 30px);
     grid-template-rows: repeat(24, 30px);
+}
+
+#game-over {
+    color: red;
+    font-size: 48px;
+    font-weight: bold;
+    /* center*/
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    /* fade-in animation */
+    animation: fade-in 0.5s ease-in;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
