@@ -1,3 +1,7 @@
+import { GameBoard } from './classes/GameBoard.js';
+import { Position } from './classes/Position.js';
+import { Tetromino } from './classes/Tetromino.js';
+
 const ROWS = 24;
 const COLUMNS = 10;
 
@@ -27,14 +31,14 @@ function startGame() {
     if (!gameRunning) {
         gameRunning = true;
         showGameOverMessage(false);
-        
+
         setupGame();
     }
 }
 
 function setupGame() {
     score = 0;
-    gameBoard = new Board();
+    gameBoard = new GameBoard();
     timer = setInterval(gameTick, 100);
     gameboardDivs.forEach(div => div.style = 'background-color: white;');
 }
@@ -76,7 +80,7 @@ function gameTick() {
 
     // if there is no falling piece, spawn a new one
     if (!fallingPiece) {
-        fallingPiece = new Piece();
+        fallingPiece = new Tetromino();
         draw(fallingPiece.color, fallingPiece.positions);
     } else { // if there is a falling piece, move it down
         draw('white', fallingPiece.positions);
@@ -98,50 +102,5 @@ function showGameOverMessage(isShowing) {
     let el = document.querySelector('#game-over');
     el.style.display = isShowing ? 'block' : 'none';
 }
-
-class Piece {
-    positions;
-    color;
-    constructor() {
-        // TODO pick a random piece
-        // for now only THE BEST PIECE 4 down
-        this.positions = [new Position(0, 1), new Position(0, 0), new Position(0, 2), new Position(0, 3)];
-        this.color = 'blue';
-    }
-
-    moveDown() {
-        this.positions.forEach(position => position.y += 1);
-    }
-}
-
-class Position {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    toString() {
-        return `${this.x},${this.y}`;
-    }
-}
-
-class Board {
-    constructor() {
-        this.occupiedPositions = new Set();
-    }
-
-    addBlock(position) {
-        this.occupiedPositions.add(position.toString());
-    }
-
-    removeBlock(position) {
-        this.occupiedPositions.delete(position.toString());
-    }
-
-    isOccupied(position) {
-        return this.occupiedPositions.has(position.toString());
-    }
-}
-
 
 setup();
